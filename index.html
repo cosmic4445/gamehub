@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GameHub</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+<div id="bar">
+  <div id="logo">GAMEHUB</div>
+  <button class="nb on" onclick="nav('games')">Games</button>
+  <button class="nb" onclick="nav('news')">News</button>
+  <button class="nb" onclick="nav('lb')">Scores</button>
+  <button class="nb" onclick="nav('search')">Search</button>
+  <button class="nb" onclick="nav('settings')">Settings</button>
+  <button class="nb" onclick="nav('tos')">TOS</button>
+  <div id="bar-r">
+    <span id="ubadge" onclick="nav('profile')" title="Profile"></span>
+    <button class="abtn" id="btnli" onclick="nav('login')">Log in</button>
+    <button class="abtn p" id="btnreg" onclick="nav('register')">Sign up</button>
+  </div>
+</div>
+
+<div id="content">
+
+  <!-- GAMES -->
+  <div class="view on" id="v-games">
+    <div class="sh">// select a game</div>
+    <div id="grid">
+      <div class="tile wide" onclick="go('tetris')"><span class="tnum">01</span><div class="tico">▦</div><div class="tname">Tetris</div><div class="ttag">classic · arcade</div><div class="tkeys">← → ↑ rotate · space</div></div>
+      <div class="tile wide" onclick="go('snake')"><span class="tnum">02</span><div class="tico">⬡</div><div class="tname">Snake</div><div class="ttag">classic · arcade</div><div class="tkeys">wasd / arrows</div></div>
+      <div class="tile" onclick="go('pong')"><span class="tnum">03</span><div class="tico">⬜</div><div class="tname">Pong</div><div class="ttag">sport</div><div class="tkeys">w s · first to 7</div></div>
+      <div class="tile" onclick="go('breakout')"><span class="tnum">04</span><div class="tico">▬</div><div class="tname">Breakout</div><div class="ttag">arcade</div><div class="tkeys">mouse or ← →</div></div>
+      <div class="tile" onclick="go('flappy')"><span class="tnum">05</span><div class="tico">▷</div><div class="tname">Flappy</div><div class="ttag">endless</div><div class="tkeys">space / click</div></div>
+      <div class="tile" onclick="go('asteroids')"><span class="tnum">06</span><div class="tico">✦</div><div class="tname">Asteroids</div><div class="ttag">shoot</div><div class="tkeys">↑ ← → · space</div></div>
+      <div class="tile" onclick="go('minesweeper')"><span class="tnum">07</span><div class="tico">⊞</div><div class="tname">Minesweeper</div><div class="ttag">puzzle</div><div class="tkeys">click · r-click flag</div></div>
+      <div class="tile" onclick="go('g2048')"><span class="tnum">08</span><div class="tico">#</div><div class="tname">2048</div><div class="ttag">puzzle</div><div class="tkeys">arrow keys</div></div>
+      <div class="tile" onclick="go('tictactoe')"><span class="tnum">09</span><div class="tico">✕○</div><div class="tname">Tic-Tac-Toe</div><div class="ttag">vs cpu</div><div class="tkeys">click</div></div>
+      <div class="tile" onclick="go('memory')"><span class="tnum">10</span><div class="tico">◈</div><div class="tname">Memory</div><div class="ttag">puzzle</div><div class="tkeys">click to flip</div></div>
+      <div class="tile" onclick="go('typing')"><span class="tnum">11</span><div class="tico">_</div><div class="tname">Typing Test</div><div class="ttag">skill</div><div class="tkeys">type the words</div></div>
+      <div class="tile" onclick="go('wordle')"><span class="tnum">12</span><div class="tico">Aa</div><div class="tname">Word Guess</div><div class="ttag">word</div><div class="tkeys">type + enter</div></div>
+    </div>
+  </div>
+
+  <!-- PLAY -->
+  <div id="v-play">
+    <div id="play-hd"><button id="bk" onclick="back()">← back</button><div id="ptitle">—</div></div>
+    <div id="play-body"></div>
+  </div>
+
+  <!-- NEWS -->
+  <div class="view" id="v-news">
+    <div class="sh">// news & updates</div>
+    <div class="ngrid">
+      <div class="nc big"><div class="ndate">2026-06-03</div><div class="ntitle">RELEASE!</div><div class="ntag">Gamehub has released and is currently very buggy. Account creation will not work</div></div>
+      <!--<div class="nc"><div class="ndate">0000-00/00</div><div class="ntitle">Template</div><div class="ntag">Template</div></div>> -->
+    </div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="view" id="v-lb">
+    <div class="sh">// global leaderboard · firebase</div>
+    <table class="lbt">
+      <thead><tr><th>#</th><th>Player</th><th>Game</th><th>Score</th><th>Date</th></tr></thead>
+      <tbody id="lbbody"><tr><td colspan="5" class="lb-empty">loading...</td></tr></tbody>
+    </table>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="view" id="v-search">
+    <div class="sh">// search</div>
+    <div class="srow2">
+      <input id="sq" placeholder="search anything..." onkeydown="if(event.key==='Enter')doSearch()">
+      <button onclick="doSearch()">search</button>
+    </div>
+    <div id="srout" class="sr-placeholder">awaiting query</div>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="view" id="v-login">
+    <div class="fw">
+      <h2>Log In</h2><div class="fsub">// access your account</div>
+      <div class="ferr" id="lerr"></div>
+      <label>Email</label><input id="lie" type="email" placeholder="you@example.com">
+      <label>Password</label><input id="lip" type="password" placeholder="••••••••">
+      <button class="fsub2" onclick="doLogin()">Log In</button>
+      <div class="flink">No account? <a onclick="nav('register')">Sign up</a> &nbsp;·&nbsp; <a onclick="doForgot()">Forgot password?</a></div>
+    </div>
+  </div>
+
+  <!-- REGISTER -->
+  <div class="view" id="v-register">
+    <div class="fw">
+      <h2>Create Account</h2><div class="fsub">// join gamehub</div>
+      <div class="ferr" id="rerr"></div><div class="fok" id="rok"></div>
+      <label>Username</label><input id="ruu" placeholder="shown on leaderboard">
+      <label>Email</label><input id="rue" type="email" placeholder="you@example.com">
+      <label>Password</label><input id="rup" type="password" placeholder="min 6 chars">
+      <label>Confirm Password</label><input id="rup2" type="password" placeholder="repeat">
+      <button class="fsub2" onclick="doReg()">Create Account</button>
+      <div class="flink">Have an account? <a onclick="nav('login')">Log in</a> &nbsp;·&nbsp; <a onclick="nav('tos')">Terms</a></div>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="view" id="v-profile">
+    <div class="sh">// profile</div>
+    <div class="prof-wrap" id="prof-inner">
+      <div class="sr-placeholder">not logged in</div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="view" id="v-settings">
+    <div class="sh">// settings</div>
+    <div class="settings-wrap">
+      <div class="srow"><div><div class="sl2">Firebase</div><div class="ss" id="fb-s">connecting...</div></div></div>
+      <div class="srow"><div><div class="sl2">Sound Effects</div><div class="ss">Play audio in games</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="srow"><div><div class="sl2">Hard Mode</div><div class="ss">Increased difficulty</div></div><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+      <div class="srow"><div><div class="sl2">Save Scores</div><div class="ss">Sync to Firebase</div></div><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="srow"><div><div class="sl2">Account</div><div class="ss" id="sacct">Not logged in</div></div><button class="dbtn" id="slogout" onclick="doLogout()" style="display:none">Log Out</button></div>
+      <div class="settings-version">GameHub v2.0.0 · gamehub-69e6e · Firebase</div>
+    </div>
+  </div>
+
+  <!-- TOS -->
+  <div class="view" id="v-tos">
+    <div class="doc">
+      <h2>Terms of Service</h2><div class="ddate">Effective: June 3, 2026</div>
+      <h3>1. Acceptance</h3><p>By using GameHub you agree to these terms.</p>
+      <h3>2. Accounts</h3><p>Accounts are powered by Firebase Authentication. Your password is never stored in plaintext. You are responsible for keeping your credentials secure.</p>
+      <h3>3. Data</h3><p>We store your username, email, and game scores in Firebase Firestore (project: gamehub-69e6e). We do not sell your data.</p>
+      <h3>4. Use of Service</h3><p>GameHub is for personal, non-commercial entertainment only. Score manipulation may result in account removal.</p>
+      <h3>5. Disclaimer</h3><p>GameHub is provided as-is without warranty of any kind.</p>
+      <h3>Contact</h3><p>legal@gamehub.io</p>
+    </div>
+  </div>
+
+</div><!-- /content -->
+</div><!-- /app -->
+
+<!-- Firebase module -->
+<script type="module" src="firebase.js"></script>
+<!-- Game logic -->
+<script src="app.js"></script>
+</body>
+</html>
